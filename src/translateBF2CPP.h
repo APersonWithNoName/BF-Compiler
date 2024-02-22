@@ -39,7 +39,7 @@ std::string String_translateBF2CPP(std::string input_string) {
 	return output_string;
 }
 
-void File_translateBF2CPP(std::string infileName, std::string outfileName) {
+bool File_translateBF2CPP(std::string infileName, std::string outfileName) {
 	std::ifstream infile(infileName);
 	if (infile.is_open()) {
 		std::string lineData;
@@ -51,25 +51,28 @@ void File_translateBF2CPP(std::string infileName, std::string outfileName) {
 		std::string translated_string = String_translateBF2CPP(Data);
 		std::ofstream outfile(outfileName);
 		if (outfile.is_open()) {
-			outfile << "\#include\<iostream\>\n";
+			outfile << "#include<iostream>\n";
 			outfile << "using namespace std;\n";
-			outfile << "void run\(\) \{\n";
-			outfile << "char arr\[1000\] = \{0\};\n";
-			outfile << "char\* p = arr+500;\n";
+			outfile << "void run() {\n";
+			outfile << "char arr[1000] = {0};\n";
+			outfile << "char* p = arr+500;\n";
 			outfile << translated_string << std::endl;
-			outfile << "\}\n\n";
-			outfile << "int main\(\) \{\n";
-			outfile << "run\(\);\n";
+			outfile << "}\n\n";
+			outfile << "int main() {\n";
+			outfile << "run();\n";
 			outfile << "return 0;\n";
-			outfile << "\}";
+			outfile << "}";
 			outfile.close();
+			return true;
 		}
 		else {
-			std::cout << "Something wrong, I cannot open the output file. Please try again." << std::endl;
+			//std::cout << "Something wrong, I cannot open the output file. Please try again." << std::endl;
+			return false;
 		}
 	}
 	else {
-		std::cout << "Something wrong, I cannot open the file named" << infileName <<"." << std::endl;
-		std::cout << "Please check the input file and try again." << std::endl;
+		//std::cout << "Something wrong, I cannot open the file named" << infileName <<"." << std::endl;
+		//std::cout << "Please check the input file and try again." << std::endl;
+		return false;
 	}
 }
